@@ -1,6 +1,10 @@
 import os
-from flask import Flask
 
+from flask import Flask, flash, request, redirect, url_for
+from werkzeug.utils import secure_filename
+
+UPLOAD_FOLDER = '/files'
+ALLOWED_EXTENSIONS = {'csv'}
 
 def create_app(test_config=None):
     # create and configure the app
@@ -8,6 +12,8 @@ def create_app(test_config=None):
     app.config.from_mapping(
         SECRET_KEY='dev',
     )
+
+    app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
     if test_config is None:
         # load the instance config, if it exists, when not testing

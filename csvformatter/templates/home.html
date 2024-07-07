@@ -1,42 +1,21 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Home</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Papyrus&display=swap');
-        body {
-            font-family: 'Papyrus', bold;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background: linear-gradient(to right, green , yellow);
-        }
-        .dropzone {
-            width: 300px;
-            height: 200px;
-            border: 2px dashed #aaa;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: #aaa;
-        }
-    </style>
-</head>
-<body>
-    <div>
-        <h1>INGRESE EL .csv</h1>
-        <form action="/upload" method="post" enctype="multipart/form-data">
-            <div class="dropzone">
-                <input type="file" name="file" id="file">
-                
-            </div>
-            
-            <button type="submit">Enviar</button>
-        </form>
-    </div>
-    <br>
-    <iframe src="https://gifer.com/embed/1ROW" width=480 height=307.200 frameBorder="0" allowFullScreen></a></p>
-</body>
+{% include 'header.html' %}
 
-</html>
+<form action="/upload" method="post" enctype="multipart/form-data" class="flex flex-col items-center mt-24">
+    
+    <span class="font-large text-gray-600 pb-4">
+        Arrastrá el archivo, o
+    </span>
+    
+    <div
+        class="flex justify-center h-12 mb-2 p-16 px-4 transition bg-white border-2 border-gray-300 border-dashed rounded-md appearance-none cursor-pointer hover:border-gray-400 focus:outline-none">
+        <div class="flex items-center">
+            <input type="file" name="file" id="file" class="ml-2" accept=".csv">
+        </div>
+    </div>
+    <p class="text-sm text-gray-500">Sólo se permiten archivos .csv</p>
+    <button type="submit" id="submitBtn"
+        class="mt-14 bg-green-500 text-white font-bold py-2 px-4 rounded disabled:opacity-50" >Enviar</button>
+
+</form>
+
+{% include 'footer.html' %}

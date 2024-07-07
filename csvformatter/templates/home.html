@@ -1,21 +1,40 @@
 {% include 'header.html' %}
 
-<form action="/upload" method="post" enctype="multipart/form-data" class="flex flex-col items-center mt-24">
+<form action="/upload" method="post" enctype="multipart/form-data" class="flex flex-col items-center mt-24" id="uploadForm">
     
     <span class="font-large text-gray-600 pb-4">
         Arrastrá el archivo, o
     </span>
     
-    <div
-        class="flex justify-center h-12 mb-2 p-16 px-4 transition bg-white border-2 border-gray-300 border-dashed rounded-md appearance-none cursor-pointer hover:border-gray-400 focus:outline-none">
+    <div class="flex justify-center h-12 mb-2 p-16 px-4 transition bg-white border-2 border-gray-300 border-dashed rounded-md appearance-none cursor-pointer hover:border-gray-400 focus:outline-none">
         <div class="flex items-center">
-            <input type="file" name="file" id="file" class="ml-2" accept=".csv">
+            <input type="file" name="file" id="file" class="ml-2" accept=".csv" onchange="validateFile()">
         </div>
     </div>
     <p class="text-sm text-gray-500">Sólo se permiten archivos .csv</p>
-    <button type="submit" id="submitBtn"
-        class="mt-14 bg-green-500 text-white font-bold py-2 px-4 rounded disabled:opacity-50" >Enviar</button>
 
+    <button type="submit" id="submitBtn" class="mt-14 bg-green-500 text-white font-bold py-2 px-4 rounded disabled:opacity-20" >Subir</button>
+    
+    <span id="errorMessage" class="text-red-600 mt-4"></span> <!-- Error message -->
 </form>
 
 {% include 'footer.html' %}
+
+<script>
+$(document).ready(function() {
+    $('#uploadForm').submit(function(e) {
+        var fileInput = $('#file');
+        var filePath = fileInput.val();
+        var allowedExtensions = /(\.csv)$/i;
+        if (!filePath) {
+            $('#errorMessage').text('Por favor, seleccione un archivo.');
+            e.preventDefault();
+        } else if (!allowedExtensions.exec(filePath)) {
+            $('#errorMessage').text('Sólo se permiten archivos .csv.');
+            e.preventDefault(); 
+        } else {
+            $('#errorMessage').text(''); 
+        }
+    });
+});
+</script>

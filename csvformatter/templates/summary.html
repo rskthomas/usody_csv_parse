@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<body>
+    
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+    <style> 
+        @page { size: A4; margin: 20mm; }
+    </style>
+    <div>
+        <div class="py-4">
+            <div class="px-14 py-6">
+                <table class="w-full border-collapse border-spacing-0">
+                    <tbody>
+                        <tr>
+                            <td class="w-full align-top">
+                                <div>
+                                    <img src="https://ekoa.unlp.edu.ar/wp-content/uploads/2022/05/logo-ekoa.png"
+                                        class="h-14" />
+                                </div>
+                            </td>
+
+                            <td class="align-top">
+                                <div class="text-sm">
+                                    <table class="border-collapse border-spacing-0">
+                                        <tbody>
+                                            <tr>
+                                                <td class="border-r pr-4">
+                                                    <div>
+                                                        <p class="whitespace-nowrap text-slate-400 text-right">Fecha</p>
+                                                        <p class="whitespace-nowrap font-bold text-main text-right"> {{
+                                                            date.strftime('%B %d, %Y') }}</p>
+                                                    </div>
+                                                </td>
+
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="bg-slate-100 px-14 py-6 text-sm pt-0 mt-0">
+                <table class="w-full border-collapse border-spacing-0">
+                    <tbody>
+                            <td class=" align-top" >
+                                <div class="text-sm text-neutral-600">
+                                    <p class="font-bold">EKOA - UNLP</p>
+                                    <p>+54 (0221) 6447161</p>
+                                    <p>info@ekoa.unlp.edu.ar</p>
+                                    <p> Calle 3, C. 525 &, Tolosa, </p>
+                                    <p>Provincia de Buenos Aires</p>
+                                    <p>Argentina</p>
+                                </div>
+                            </td>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="px-14 pb-8 text-sm text-neutral-700">
+                <table class="w-full border-collapse border-spacing-0">
+                    <thead>
+                        <tr>
+                            <td class="border-b-2 border-main pb-3 pl-3 font-bold text-left">#</td>
+                            <th class="border-b-2 border-main pb-3 pl-3 font-bold text-left">Tipo</th>
+                            <th class="border-b-2 border-main pb-3 pl-3 font-bold text-left">PHID</th>
+                            <th class="border-b-2 border-main pb-3 pl-3 font-bold text-left">Modelo</th>
+                            <th class="border-b-2 border-main pb-3 pl-3 font-bold text-left">Procesador</th>
+                            <th class="border-b-2 border-main pb-3 pl-3 font-bold text-left">Fabricante</th>
+                            <th class="border-b-2 border-main pb-3 pl-3 font-bold text-left">Motherboard</th>
+                            <th class="border-b-2 border-main pb-3 pl-3 font-bold text-left">RAM (MB)</th>
+                            <th class="border-b-2 border-main pb-3 pl-3 font-bold text-left">Memoria Secundaria(MB)</th>
+                            <th class="border-b-2 border-main pb-3 pl-3 font-bold text-left">Placa de Video</th>
+                            <th class="border-b-2 border-main pb-3 pl-3 font-bold  text-right">Precio Estimado </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in data %}
+                        <tr>
+                            <td class="border-b py-3 pl-3">{{ loop.index }}</td>
+                            <td class="border-b py-3 pl-3">{{ row['Placeholder Type'] | default('N/A') }}</td>
+                            <td class="border-b py-3 pl-3">{{ row['PHID'] | default('N/A') }}</td>
+                            <td class="border-b py-3 pl-3">{{ row['Placeholder Model'] | default('N/A') }}</td>
+                            <td class="border-b py-3 pl-3">{{ row['Processor 1 Model'] | default('N/A') }}</td>
+                            <td class="border-b py-3 pl-3">{{ row['Placeholder Manufacturer'] | default('N/A') }}</td>
+                            <td class="border-b py-3 pl-3">{{ row['Motherboard 1 Manufacturer'] }} modelo
+                                {{row['Motherboard 1 Model'] | default('N/A') }}</td>
+                            <td class="border-b py-3 pl-3">{{ row['RAM (MB)'] | default('N/A') }}</td>
+                            <td class="border-b py-3 pl-3">{{ row['Data Storage Size (MB)'] | default('N/A') }}</td>
+                            <td class="border-b py-3 pl-3">{{ row['GraphicCard 1 Model'] | default('N/A') }}</td>
+                            <td class="border-b py-3 pl-3 text-right">250$ </td>
+                        </tr>
+                        {% endfor %}
+
+
+                            <table class="w-full border-collapse border-spacing-0 mt-8 text-lg">
+                                <tbody>
+                                    <tr>
+                                        <td class="w-full"></td>
+                                        <td>
+                                            <table class="w-full border-collapse border-spacing-0">
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="border-b p-3">
+                                                            <div class="whitespace-nowrap text-slate-400">Computadoras Totales:
+                                                            </div>
+                                                        </td>
+                                                        <td class="border-b p-3 text-right">
+                                                            <div class="whitespace-nowrap font-bold text-main">{{ data|length }}
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="p-3">
+                                                            <div class="whitespace-nowrap text-slate-400">Precio Total estimado:
+                                                            </div>
+                                                        </td>
+                                                        <td class="p-3 text-right">
+                                                            <div class="whitespace-nowrap font-bold text-main">$9999
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                           
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                       
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <footer class="fixed bottom-0 left-0 bg-slate-100 w-full text-neutral-600 text-center text-xs py-3">
+                EKOA - UNLP
+                <span class="text-slate-300 px-2">|</span>
+                info@ekoa.unlp.edu.ar
+                <span class="text-slate-300 px-2">|</span>
+                +54 (0221) 6447161
+            </footer>
+        </div>
+    </div>
+</body>

@@ -1,7 +1,6 @@
 
-import datetime
-import uuid
-import io
+import os, datetime, uuid, io, csv
+
 from flask import Flask, flash, request, redirect, url_for, render_template, make_response, send_file, current_app as app
 
 from csvformatter import ALLOWED_EXTENSIONS, format_csv
@@ -59,7 +58,6 @@ def upload_file():
 @app.route('/download/<tempID>', methods=['POST'])
 def download_pdf(tempID):
     # Retrieve the CSV data from the dictionary
-    print (tempID)
     data = csv_storage.get(tempID)
     
     if data is None:
@@ -77,6 +75,29 @@ def download_pdf(tempID):
         attachment_filename= f"summary_{tempID}.pdf"
     )
 
+@app.route('/save/<tempID>', methods=['POST'])
+def save_csv(tempID):
+    # Retrieve the CSV data from the dictionary
+    data = csv_storage.get(tempID)
+    
+    if data is None:
+        flash("Invalid or expired link")
+        return redirect(url_for('hello_world'))
+    
+    # Specify the Docker volume path
+    volume_path = '/app/files'
+    # Generate a unique filename
+    filename = f"summary_{tempID}_{datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.csv"
+    file_path = os.path.join(volume_path, filename)
+    
+    # Save the CSV data to a file in the Docker volume
+    with open(file_path, 'w', newline='') as csvfile:
+        csvwriter = csv.writer(csvfile)
+        for row in data:
+            csvwriter.writerow(row)
+    
+    flash("File saved successfully")
+    return redirect(url_for('hello_world'))
 
 
     

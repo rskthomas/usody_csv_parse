@@ -1,6 +1,14 @@
 {% include 'header.html' %}
 
-<form action="/upload" method="post" enctype="multipart/form-data" class="flex flex-col items-center mt-24" id="uploadForm">
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <div class="flex justify-center items-center bg-red-400 text-white p-4">
+            <p>{{ messages[0] }}</p>
+        </div>
+    {% endif %}
+{% endwith %}
+
+<form action="/preview" method="post" enctype="multipart/form-data" class="flex flex-col items-center mt-24" id="uploadForm">
     
     <span class="font-large text-gray-600 pb-4">
         Arrastrá el archivo, o

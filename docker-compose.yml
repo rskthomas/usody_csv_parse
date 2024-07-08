@@ -7,7 +7,7 @@ services:
       - "3030:5000"
     volumes:
       - .:/app:rw
-      - files:/app/files
+      - files:/app/files:rw
     environment:
       - FLASK_ENV=development
       - FLASK_APP=app.py

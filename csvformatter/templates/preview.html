@@ -1,0 +1,51 @@
+{% include 'header.html' %}
+
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <div class="flex justify-center items-center bg-red-400 text-white p-4">
+            <p>{{ messages[0] }}</p>
+        </div>
+    {% endif %}
+{% endwith %}
+
+<div class="flex justify-center items-center text-black mt-4">
+    <p> Archivo {{ filename }}</p> </div>
+
+<body >
+    <div class="container mx-auto p-24 pt-4">
+        <table class="table-auto w-full bg-green-100">
+            <thead>
+                <tr>
+                    <th class="px-4 py-2">PHID</th>
+                    <th class="px-4 py-2">Tipo</th>
+                    <th class="px-4 py-2">Procesador</th>
+                    <th class="px-4 py-2">Modelo</th>
+                    <th class="px-4 py-2">Fabricante</th>
+                    <th class="px-4 py-2">Motherboard</th>
+                    <th class="px-4 py-2">RAM (MB)</th>
+                    <th class="px-4 py-2">SSD/HDD</th>
+                    <th class="px-4 py-2">Memoria Secundaria(MB)</th>
+                    <th class="px-4 py-2">Placa de Video</th> 
+                </tr>
+            </thead>
+            <tbody class ="bg-green-50 text">
+                {% for row in data %}
+                <tr>
+                    <td class="border px-4 py-2">{{ row['PHID'] | default('N/A') }}</td>
+                    <td class="border px-4 py-2">{{ row['Placeholder Type'] | default('N/A') }}</td>
+                    <td class="border px-4 py-2">{{ row['Processor 1 Model'] | default('N/A') }}</td>
+                    <td class="border px-4 py-2">{{ row['Placeholder Model'] | default('N/A') }}</td>
+                    <td class="border px-4 py-2">{{ row['Placeholder Manufacturer'] | default('N/A') }}</td>
+                    <td class="border px-4 py-2">{{ row['Motherboard 1 Manufacturer'] }} modelo {{row['Motherboard 1 Model'] | default('N/A') }}</td>
+                    <td class="border px-4 py-2">{{ row['RAM (MB)'] | default('N/A') }}</td>
+                    <td class="border px-4 py-2">{{ row['Storage Type'] | default('N/A') }}</td>
+                    <td class="border px-4 py-2">{{ row['Data Storage Size (MB)'] | default('N/A') }}</td>
+                    <td class="border px-4 py-2">{{ row['GraphicCard 1 Model'] | default('N/A') }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+
+{% include 'footer.html' %}

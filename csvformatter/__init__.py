@@ -1,10 +1,12 @@
 import os
+import math
 
+from weasyprint import HTML
 from flask import Flask, flash, request, redirect, url_for
 from werkzeug.utils import secure_filename
 
 UPLOAD_FOLDER = '/files'
-ALLOWED_EXTENSIONS = {'csv'}
+ALLOWED_EXTENSIONS = {'csv', 'xlsx'}
 
 def create_app(test_config=None):
     # create and configure the app
@@ -31,3 +33,15 @@ def create_app(test_config=None):
     with app.app_context():
         from . import routes
     return app
+
+
+def format_csv(data):
+
+    for row in data:
+        for key, value in row.items():
+            if isinstance(value, float) and math.isnan(value):
+                row[key] = None  # Replace NaN with None
+            if value == 0:
+                row[key] = None
+    return data
+

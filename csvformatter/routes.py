@@ -1,9 +1,12 @@
 
-import os
-import csv
-from flask import Flask, flash, request, redirect, url_for, render_template, current_app as app
-from csvformatter import ALLOWED_EXTENSIONS
+import datetime
+import uuid
+import io
+from flask import Flask, flash, request, redirect, url_for, render_template, make_response, send_file, current_app as app
+
+from csvformatter import ALLOWED_EXTENSIONS, format_csv
 from werkzeug.utils import secure_filename
+from flask_weasyprint import HTML, render_pdf, CSS
 
 import pandas as pd 
 @app.route('/')
@@ -11,6 +14,7 @@ def hello_world():
     #return home.jinja2 template
     return render_template('home.html')
 
+csv_storage = {}
 
 @app.route('/preview', methods=['GET', 'POST'])
 def upload_file():
@@ -40,15 +44,41 @@ def upload_file():
                 flash(f"Error processing file: {str(e)}")
                 return redirect(request.url)
             
-            print(data_list)
-            return render_template('preview.html', data=data_list, filename=filename)
+            # Format the data
+            data_list = format_csv(data_list)
+            # Generate a unique ID for this CSV
+            temp_id = str(uuid.uuid4())
+            # Store the CSV content in the dictionary
+            csv_storage[temp_id] = data_list
+            
+            return render_template('preview.html', data=data_list, filename=filename, date=datetime.datetime.now(), temp_id=temp_id)
         
     return render_template('home.html')
 
 
-def format_csv(data):
-    #Parse the csv data in a more readeble way
-    return data
+@app.route('/download/<tempID>', methods=['POST'])
+def download_pdf(tempID):
+    # Retrieve the CSV data from the dictionary
+    print (tempID)
+    data = csv_storage.get(tempID)
+    
+    if data is None:
+        flash("Invalid or expired link")
+        return redirect(url_for('hello_world'))
+    
+    html = render_template('summary.html', data=data, date=datetime.datetime.now())
+    css = CSS(string='@page { size: A4; margin: 1cm; }', media_type='print')
+    pdf = HTML(string=html).write_pdf(stylesheets=[css])
+    
+    return send_file(
+        io.BytesIO(pdf),
+        mimetype='application/pdf',
+        as_attachment=True,
+        attachment_filename= f"summary_{tempID}.pdf"
+    )
+
+
+
     
 def allowed_file(filename):
     return '.' in filename and \
